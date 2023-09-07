@@ -12,20 +12,21 @@ namespace SqlConverter.Converter
         {
             for (int i = 0; i < queryParser.queryList.Count; i++)
             {
+                string queryLıne = queryParser.queryList[i];
 
-                if (queryParser.queryList[i].Contains("CHAR_LENGTH("))
+                if (queryLıne.Contains("CHAR_LENGTH("))
                 {
-                    queryParser.queryList[i] = queryParser.queryList[i].Replace("CHAR_LENGTH(", "LENGTH(");
+                    queryParser.queryList[i] = queryLıne.Replace("CHAR_LENGTH(", "LENGTH(");
                 }
 
-                if (queryParser.queryList[i].Contains("CHARACTER_LENGTH("))
+                if (queryLıne.Contains("CHARACTER_LENGTH("))
                 {
-                    queryParser.queryList[i] = queryParser.queryList[i].Replace("CHARACTER_LENGTH(", "LENGTH(");
+                    queryParser.queryList[i] = queryLıne.Replace("CHARACTER_LENGTH(", "LENGTH(");
                 }
                 
-                if (queryParser.queryList[i].Contains("CONCAT("))
+                if (queryLıne.Contains("CONCAT("))
                 {
-                    if (queryParser.queryList[i].Contains("GROUP_CONCAT("))
+                    if (queryLıne.Contains("GROUP_CONCAT("))
                     {
                         string distinct, orderBy, separator;
                         string[] temp;
@@ -79,15 +80,10 @@ namespace SqlConverter.Converter
                     {
                         string[] expressıon, temp;
 
-                        temp = queryParser.queryList[i].Split("(");
+                        temp = queryLıne.Split("CONCAT(");
                         temp = temp[1].Split(")");
-                        
 
-                        queryParser.queryList[i] = queryParser.queryList[i].Replace(",", "||");
-                        queryParser.queryList[i] = queryParser.queryList[i].Replace("CONCAT(", " ");
-                        queryParser.queryList[i] = queryParser.queryList[i].Replace(")", " ");
-
-
+                        queryParser.queryList[i] = queryParser.queryList[i].Replace("CONCAT(" + temp[0] + ")", "CONCAT(" + temp[0].Replace(",", " ||") + ")");
                     }
 
                 }

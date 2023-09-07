@@ -12,13 +12,11 @@ namespace SqlConverter
     public class QueryParser
     {
         public List<string> queryList = new List<string>();
-
             public QueryParser(string _query)
             {
                 string[] strings = _query.Split("\r\n");
                 foreach (string s in strings)
                 {
-
                     if (s == "")
                     {
 
@@ -30,6 +28,5 @@ namespace SqlConverter
                     }
                 }
             }
-        
     }
 }

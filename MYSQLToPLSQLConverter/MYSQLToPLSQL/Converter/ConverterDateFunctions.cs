@@ -11,7 +11,8 @@ namespace SqlConverter.Converter
         public override void Convert(QueryParser queryParser)
         {
             for (int i = 0; i < queryParser.queryList.Count; i++)
-            {    
+            {
+                string queryLıne = queryParser.queryList[i];
 
                 if (queryParser.queryList[i].Contains("CURDATE()"))
                 {
@@ -98,23 +99,22 @@ namespace SqlConverter.Converter
 
                 if (queryParser.queryList[i].Contains("DATE_ADD("))
                 {
-                    string date, ınterval, value, addunıt;
-                    string[] temp;
+                    //string date, ınterval, value, addunıt;
+                    //string[] temp;
 
-                    temp = queryParser.queryList[i].Split("(");
+                    //temp = queryParser.queryList[i].Split("(");
 
-                    temp = temp[1].ToString().Split(",");
+                    //temp = temp[1].ToString().Split(",");
 
-                    date = temp[0];
+                    //date = temp[0];
 
-                    temp = temp[1].ToString().Split(" ");
+                    //temp = temp[1].ToString().Split(" ");
 
-                    ınterval = temp[1];
-                    value = temp[2];
-
+                    //value = temp[2];
 
 
-                    queryParser.queryList[i] = queryParser.queryList[i].Replace(" " + value.ToString(), " '" + value.ToString() + "'");
+
+                    //queryParser.queryList[i] = queryParser.queryList[i].Replace(" " + value.ToString(), " '" + value.ToString() + "'");
 
                 }
 
@@ -355,7 +355,7 @@ namespace SqlConverter.Converter
 
                 if (queryParser.queryList[i].Contains("NOW()"))
                 {
-                    queryParser.queryList[i] = queryParser.queryList[i].Replace("NOW()", "SYSTIMESTAMP"); 
+                    queryParser.queryList[i] = queryParser.queryList[i].Replace("NOW()", "SYSDATE"); 
                 }
 
             }

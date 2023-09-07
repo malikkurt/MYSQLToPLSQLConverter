@@ -28,7 +28,7 @@ namespace MYSQLToPLSQLConverter
 
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void ConverterButton_Click(object sender, EventArgs e)
         {
             string userInput = QueryInput.Text;
 
@@ -63,10 +63,10 @@ namespace MYSQLToPLSQLConverter
 
             foreach (string s in queryParser.queryList)
             {
-                
+
                 string cleanQuery = s.Replace("\r\n", "");
 
-                
+
                 convertedQueries.AppendLine(cleanQuery);
             }
 

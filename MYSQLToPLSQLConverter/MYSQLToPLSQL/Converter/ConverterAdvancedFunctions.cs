@@ -13,6 +13,7 @@ namespace SqlConverter.Converter
 
             for (int i = 0; i < queryParser.queryList.Count; i++)
             {
+                string queryLıne = queryParser.queryList[i];
 
                 if (queryParser.queryList[i].Contains("CONVERT(")) 
                 {
@@ -65,18 +66,15 @@ namespace SqlConverter.Converter
 
                 }
 
-                if (queryParser.queryList[i].Contains("IFNULL("))
+                if (queryLıne.Contains("IFNULL("))
                 {
-                    queryParser.queryList[i] = queryParser.queryList[i].Replace("IFNULL(", "NVL(");
+                    queryParser.queryList[i] = queryLıne.Replace("IFNULL(", "NVL(");
                 }
 
                 if (queryParser.queryList[i].Contains("CEILING("))
                 {
                     queryParser.queryList[i] = queryParser.queryList[i].Replace("CEILING(", "CEIL(");
                 }
-
-             
-
 
             }
             _nextConverterHandler.Convert(queryParser);

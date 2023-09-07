@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             label1 = new Label();
-            button1 = new Button();
+            ConverterButton = new Button();
             QueryInput = new TextBox();
             label2 = new Label();
             QueryOuput = new TextBox();
@@ -38,62 +38,62 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(25, 10);
+            label1.BorderStyle = BorderStyle.FixedSingle;
+            label1.Location = new Point(29, 24);
             label1.Name = "label1";
-            label1.Size = new Size(67, 15);
+            label1.Size = new Size(61, 22);
             label1.TabIndex = 0;
-            label1.Text = "Sorgu Giriş:";
+            label1.Text = "MYSQL:\r\n";
             label1.Click += label1_Click;
             // 
-            // button1
+            // ConverterButton
             // 
-            button1.Location = new Point(707, 173);
-            button1.Margin = new Padding(3, 2, 3, 2);
-            button1.Name = "button1";
-            button1.Size = new Size(89, 56);
-            button1.TabIndex = 1;
-            button1.Text = "Çevir";
-            button1.UseVisualStyleBackColor = true;
-            button1.Click += button1_Click;
+            ConverterButton.Location = new Point(838, 219);
+            ConverterButton.Name = "ConverterButton";
+            ConverterButton.Size = new Size(150, 75);
+            ConverterButton.TabIndex = 1;
+            ConverterButton.Text = "Çevir";
+            ConverterButton.UseVisualStyleBackColor = true;
+            ConverterButton.Click += ConverterButton_Click;
             // 
             // QueryInput
             // 
-            QueryInput.Location = new Point(25, 48);
-            QueryInput.Margin = new Padding(3, 2, 3, 2);
+            QueryInput.Location = new Point(29, 64);
             QueryInput.Multiline = true;
             QueryInput.Name = "QueryInput";
-            QueryInput.Size = new Size(624, 733);
+            QueryInput.Size = new Size(713, 907);
             QueryInput.TabIndex = 2;
             QueryInput.TextChanged += QueryInput_TextChanged;
             // 
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(853, 9);
+            label2.BorderStyle = BorderStyle.FixedSingle;
+            label2.Location = new Point(1094, 24);
             label2.Name = "label2";
-            label2.Size = new Size(34, 15);
+            label2.Size = new Size(57, 22);
             label2.TabIndex = 3;
-            label2.Text = "Çıktı:";
+            label2.Text = "Oracle:";
             // 
             // QueryOuput
             // 
-            QueryOuput.Location = new Point(853, 48);
+            QueryOuput.Location = new Point(1094, 64);
+            QueryOuput.Margin = new Padding(3, 4, 3, 4);
             QueryOuput.Multiline = true;
             QueryOuput.Name = "QueryOuput";
-            QueryOuput.Size = new Size(654, 732);
+            QueryOuput.Size = new Size(747, 907);
             QueryOuput.TabIndex = 4;
             // 
             // Form1
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1519, 792);
+            ClientSize = new Size(1902, 1033);
             Controls.Add(QueryOuput);
             Controls.Add(label2);
             Controls.Add(QueryInput);
-            Controls.Add(button1);
+            Controls.Add(ConverterButton);
             Controls.Add(label1);
-            Margin = new Padding(3, 2, 3, 2);
             Name = "Form1";
             Text = "Form1";
             Load += Form1_Load;
@@ -104,7 +104,7 @@
         #endregion
 
         private Label label1;
-        private Button button1;
+        private Button ConverterButton;
         private TextBox QueryInput;
         private Label label2;
         private Label QueryResult;
