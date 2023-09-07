@@ -83,7 +83,9 @@ namespace SqlConverter.Converter
                         temp = queryLıne.Split("CONCAT(");
                         temp = temp[1].Split(")");
 
-                        queryParser.queryList[i] = queryParser.queryList[i].Replace("CONCAT(" + temp[0] + ")", "CONCAT(" + temp[0].Replace(",", " ||") + ")");
+                        
+                        queryLıne = queryLıne.Replace("CONCAT(" + temp[0] + ")", " (" + temp[0].Replace(",", " ||") + ")");
+                        queryParser.queryList[i] = queryLıne.Replace("COLLATE utf8_unicode_ci", "");
                     }
 
                 }

@@ -14,34 +14,34 @@ namespace SqlConverter.Converter
             {
                 string queryLıne = queryParser.queryList[i];
 
-                if (queryParser.queryList[i].Contains("CURDATE()"))
+                if (queryLıne.Contains("CURDATE()"))
                 {
-                    queryParser.queryList[i] = queryParser.queryList[i].Replace("CURDATE()", "TRUNC(SYSDATE)"); 
+                    queryParser.queryList[i] = queryLıne.Replace("CURDATE()", "TRUNC(SYSDATE)"); 
                 }
                 
-                if (queryParser.queryList[i].Contains("CURRENT_DATE") && !queryParser.queryList[i].Contains("()"))
+                if (queryLıne.Contains("CURRENT_DATE") && !queryLıne.Contains("()"))
                 {
-                    queryParser.queryList[i] = queryParser.queryList[i].Replace("CURRENT_DATE", "TRUNC(SYSDATE)"); 
+                    queryParser.queryList[i] = queryLıne.Replace("CURRENT_DATE", "TRUNC(SYSDATE)"); 
                 }
                 
-                if (queryParser.queryList[i].Contains("CURRENT_DATE()"))
+                if (queryLıne.Contains("CURRENT_DATE()"))
                 {
-                    queryParser.queryList[i] = queryParser.queryList[i].Replace("CURRENT_DATE()", "TRUNC(SYSDATE)"); 
+                    queryParser.queryList[i] = queryLıne.Replace("CURRENT_DATE()", "TRUNC(SYSDATE)"); 
                 }
                 
-                if (queryParser.queryList[i].Contains("DATE("))
+                if (queryLıne.Contains("DATE("))
                 {
-                    if (queryParser.queryList[i].Contains("SYSDATE("))
+                    if (queryLıne.Contains("SYSDATE("))
                     {
-                        queryParser.queryList[i] = queryParser.queryList[i].Replace("SYSDATE()", "SYSDATE");
+                        queryParser.queryList[i] = queryLıne.Replace("SYSDATE()", "SYSDATE");
                         continue;
                     }
-                    if (queryParser.queryList[i].Contains("ADDDATE("))
+                    if (queryLıne.Contains("ADDDATE("))
                     {
                         string date, days, value, addunit, ınterval;
                         string[] temp;
 
-                        temp = queryParser.queryList[i].Split("(");
+                        temp = queryLıne.Split("(");
 
                         temp = temp[1].Split(",");
                         date = temp[0];
@@ -53,83 +53,83 @@ namespace SqlConverter.Converter
                         temp = temp[3].Split(")");
                         addunit = temp[0];
 
-                        queryParser.queryList[i] = queryParser.queryList[i].Replace(",", " +");
+                        queryLıne = queryLıne.Replace(",", " +");
 
                         if (value.ToString().Contains("'"))
                         {
-                            queryParser.queryList[i] = queryParser.queryList[i].Replace("ADDDATE(", "");
-                            queryParser.queryList[i] = queryParser.queryList[i].Replace(ınterval.ToString(), "NUMTODS" + ınterval.ToString());
-                            queryParser.queryList[i] = queryParser.queryList[i].Replace(value.ToString(), "(" + value.ToString());
-                            queryParser.queryList[i] = queryParser.queryList[i].Replace(addunit.ToString(), addunit.ToString());
+                            queryLıne = queryLıne.Replace("ADDDATE(", "");
+                            queryLıne = queryLıne.Replace(ınterval.ToString(), "NUMTODS" + ınterval.ToString());
+                            queryLıne = queryLıne.Replace(value.ToString(), "(" + value.ToString());
+                            queryParser.queryList[i] = queryLıne.Replace(addunit.ToString(), addunit.ToString());
                         }
                         else
                         {
-                            queryParser.queryList[i] = queryParser.queryList[i].Replace("ADDDATE(", "");
-                            queryParser.queryList[i] = queryParser.queryList[i].Replace(value.ToString(), "'" + value.ToString() + "'");
-                            queryParser.queryList[i] = queryParser.queryList[i].Replace(addunit.ToString() + ")", addunit.ToString());
+                            queryLıne = queryLıne.Replace("ADDDATE(", "");
+                            queryLıne = queryLıne.Replace(value.ToString(), "'" + value.ToString() + "'");
+                            queryParser.queryList[i] = queryLıne.Replace(addunit.ToString() + ")", addunit.ToString());
                         }
 
                     }
                     else
                     {
-                        queryParser.queryList[i] = queryParser.queryList[i].Replace("DATE(", "TO_DATE(");
+                        queryParser.queryList[i] = queryLıne.Replace("DATE(", "TO_DATE(");
 
                     }
                     
                 }
 
-                if (queryParser.queryList[i].Contains("DATEDIFF("))
+                if (queryLıne.Contains("DATEDIFF("))
                 {
                     string date1, date2;
                     string[] temp;
 
-                    temp = queryParser.queryList[i].Split("(");
+                    temp = queryLıne.Split("(");
                     temp = temp[1].Split(",");
                     date1 = temp[0];
                     temp = temp[1].Split(")");
                     date2 = temp[0];
 
-                    queryParser.queryList[i] = queryParser.queryList[i].Replace("DATEDIFF", "");
-                    queryParser.queryList[i] = queryParser.queryList[i].Replace("("+ date1," "+date1);
-                    queryParser.queryList[i] = queryParser.queryList[i].Replace(date2+")",date2);
-                    queryParser.queryList[i] = queryParser.queryList[i].Replace(",", " -");
+                    queryLıne = queryLıne.Replace("DATEDIFF", "");
+                    queryLıne = queryLıne.Replace("("+ date1," "+date1);
+                    queryLıne = queryLıne.Replace(date2+")",date2);
+                    queryParser.queryList[i] = queryLıne.Replace(",", " -");
                     
              
                 }
 
-                if (queryParser.queryList[i].Contains("DATE_ADD("))
+                if (queryLıne.Contains("DATE_ADD("))
                 {
-                    //string date, ınterval, value, addunıt;
-                    //string[] temp;
+                    string date, ınterval, value, addunıt;
+                    string[] temp;
 
-                    //temp = queryParser.queryList[i].Split("(");
+                    temp = queryLıne.Split("(");
 
-                    //temp = temp[1].ToString().Split(",");
+                    temp = temp[1].ToString().Split(",");
 
-                    //date = temp[0];
+                    date = temp[0];
 
-                    //temp = temp[1].ToString().Split(" ");
+                    temp = temp[1].ToString().Split(" ");
 
-                    //value = temp[2];
+                    value = temp[2];
 
 
-
-                    //queryParser.queryList[i] = queryParser.queryList[i].Replace(" " + value.ToString(), " '" + value.ToString() + "'");
+                    queryLıne = queryLıne.Replace(",", " +");
+                    queryParser.queryList[i] = queryLıne.Replace(" " + value.ToString(), " '" + value.ToString() + "'");
 
                 }
 
-                if (queryParser.queryList[i].Contains("DATE_FORMAT("))
+                if (queryLıne.Contains("DATE_FORMAT("))
                 {
-                    queryParser.queryList[i] = queryParser.queryList[i].Replace("DATE_FORMAT", "TO_CHAR"); 
+                    queryParser.queryList[i] = queryLıne.Replace("DATE_FORMAT", "TO_CHAR"); 
                 }
                 
-                if (queryParser.queryList[i].Contains("DATE_SUB("))
+                if (queryLıne.Contains("DATE_SUB("))
                 {
                     string date, value, ınterval, addunit;
 
                     string[] temp;
 
-                    temp = queryParser.queryList[i].Split("(");
+                    temp = queryLıne.Split("(");
 
                     temp = temp[1].Split(",");
                     date = temp[0];
@@ -141,79 +141,79 @@ namespace SqlConverter.Converter
                     temp = temp[3].Split(")");
                     addunit = temp[0];
 
-                    queryParser.queryList[i] = queryParser.queryList[i].Replace("DATE_SUB(", "");
-                    queryParser.queryList[i] = queryParser.queryList[i].Replace(",", " -");
-                    queryParser.queryList[i] = queryParser.queryList[i].Replace(" "+value.ToString(), " '" + value.ToString() + "'");
-                    queryParser.queryList[i] = queryParser.queryList[i].Replace(addunit.ToString() + ")",addunit.ToString() );
+                    queryLıne = queryLıne.Replace("DATE_SUB(", "");
+                    queryLıne = queryLıne.Replace(",", " -");
+                    queryLıne = queryLıne.Replace(" "+value.ToString(), " '" + value.ToString() + "'");
+                    queryParser.queryList[i] = queryLıne.Replace(addunit.ToString() + ")",addunit.ToString() );
 
                 }
 
-                if (queryParser.queryList[i].Contains("DAY("))
+                if (queryLıne.Contains("DAY("))
                 {
                     string date;
                     string[] temp;
 
-                    temp = queryParser.queryList[i].Split("(");
+                    temp = queryLıne.Split("(");
                     temp = temp[1].Split(")");
                     date = temp[0];
 
 
-                    queryParser.queryList[i] = queryParser.queryList[i].Replace("DAY(","EXTRACT(");
-                    queryParser.queryList[i] = queryParser.queryList[i].Replace(date, "DAY FROM " + date);
+                    queryLıne = queryLıne.Replace("DAY(","EXTRACT(");
+                    queryParser.queryList[i] = queryLıne.Replace(date, "DAY FROM " + date);
                     
                 }
 
-                if (queryParser.queryList[i].Contains("DAYNAME("))
+                if (queryLıne.Contains("DAYNAME("))
                 {
                     string date;
                     string[] temp;
 
-                    temp = queryParser.queryList[i].Split("("); 
+                    temp = queryLıne.Split("("); 
                     temp = temp[1].Split(")");
                     date = temp[0];
 
 
-                    queryParser.queryList[i] = queryParser.queryList[i].Replace("DAYNAME(", "TO_CHAR(");
-                    queryParser.queryList[i] = queryParser.queryList[i].Replace(date, date+ ", 'DAY'");
+                    queryLıne = queryLıne.Replace("DAYNAME(", "TO_CHAR(");
+                    queryParser.queryList[i] = queryLıne.Replace(date, date+ ", 'DAY'");
 
                 }
 
-                if (queryParser.queryList[i].Contains("DAYOFWEEK("))
+                if (queryLıne.Contains("DAYOFWEEK("))
                 {
                     string date;
                     string[] temp;
 
-                    temp = queryParser.queryList[i].Split("(");
+                    temp = queryLıne.Split("(");
                     temp = temp[1].Split(")");
                     date = temp[0];
 
 
-                    queryParser.queryList[i] = queryParser.queryList[i].Replace("DAYOFWEEK(", "TO_NUMBER(TO_CHAR(");
-                    queryParser.queryList[i] = queryParser.queryList[i].Replace(date, date + ", 'D')");
+                    queryLıne = queryLıne.Replace("DAYOFWEEK(", "TO_NUMBER(TO_CHAR(");
+                    queryParser.queryList[i] = queryLıne.Replace(date, date + ", 'D')");
 
                 }
 
-                if (queryParser.queryList[i].Contains("DAYOFYEAR("))
+                if (queryLıne.Contains("DAYOFYEAR("))
                 {
                     string date;
                     string[] temp;
 
-                    temp = queryParser.queryList[i].Split("(");
+                    temp = queryLıne.Split("(");
                     temp = temp[1].Split(")");
                     date = temp[0];
 
 
-                    queryParser.queryList[i] = queryParser.queryList[i].Replace("DAYOFYEAR(", "TO_NUMBER(TO_CHAR(");
-                    queryParser.queryList[i] = queryParser.queryList[i].Replace(date, date + ", 'DDD')");
+                    queryLıne = queryLıne.Replace("DAYOFYEAR(", "TO_NUMBER(TO_CHAR(");
+                    queryParser.queryList[i] = queryLıne.Replace(date, date + ", 'DDD')");
 
                 }
 
-                if (queryParser.queryList[i].Contains("HOUR("))
+                if (queryLıne.Contains("HOUR("))
                 {
                     string date;
                     string[] temp;
 
-                    temp = queryParser.queryList[i].Split("(");
+                    temp = queryLıne.Split("(");
                     temp = temp[1].Split(")");
                     date = temp[0];
 
@@ -221,86 +221,86 @@ namespace SqlConverter.Converter
                     queryParser.queryList[i] = queryParser.queryList[i].Replace("HOUR(", "EXTRACT(HOUR FROM ");
                 }
 
-                if (queryParser.queryList[i].Contains("MICROSECOND("))
+                if (queryLıne.Contains("MICROSECOND("))
                 {
                     string date;
                     string[] temp;
 
-                    temp = queryParser.queryList[i].Split("(");
+                    temp = queryLıne.Split("(");
                     temp = temp[1].Split(")");
                     date = temp[0];
 
 
-                    queryParser.queryList[i] = queryParser.queryList[i].Replace("MICROSECOND(", "TO_NUMBER(TO_CHAR(");
-                    queryParser.queryList[i] = queryParser.queryList[i].Replace(date,date + ", 'FF6')");
+                    queryLıne = queryLıne.Replace("MICROSECOND(", "TO_NUMBER(TO_CHAR(");
+                    queryParser.queryList[i] = queryLıne.Replace(date,date + ", 'FF6')");
 
                 }
 
-                if (queryParser.queryList[i].Contains("MINUTE("))
+                if (queryLıne.Contains("MINUTE("))
                 {
                     string date;
                     string[] temp;
 
-                    temp = queryParser.queryList[i].Split("(");
+                    temp = queryLıne.Split("(");
                     temp = temp[1].Split(")");
                     date = temp[0];
 
 
-                    queryParser.queryList[i] = queryParser.queryList[i].Replace("MINUTE(", "EXTRACT(MINUTE FROM ");
+                    queryParser.queryList[i] = queryLıne.Replace("MINUTE(", "EXTRACT(MINUTE FROM ");
                     
 
                 }
 
-                if (queryParser.queryList[i].Contains("MONTH("))
+                if (queryLıne.Contains("MONTH("))
                 {
                     string date;
                     string[] temp;
 
-                    temp = queryParser.queryList[i].Split("(");
+                    temp = queryLıne.Split("(");
                     temp = temp[1].Split(")");
                     date = temp[0];
 
-                    queryParser.queryList[i] = queryParser.queryList[i].Replace("MONTH(", "EXTRACT(MONTH FROM ");
+                    queryParser.queryList[i] = queryLıne.Replace("MONTH(", "EXTRACT(MONTH FROM ");
 
                 }
 
-                if (queryParser.queryList[i].Contains("MONTHNAME("))
+                if (queryLıne.Contains("MONTHNAME("))
                 {
                     string date;
                     string[] temp;
 
-                    temp = queryParser.queryList[i].Split("(");
+                    temp = queryLıne.Split("(");
                     temp = temp[1].Split(")");
                     date = temp[0];
 
-                    queryParser.queryList[i] = queryParser.queryList[i].Replace("MONTHNAME(", "TO_CHAR(");
-                    queryParser.queryList[i] = queryParser.queryList[i].Replace(date, date + ", 'Month'"); 
+                    queryLıne = queryLıne.Replace("MONTHNAME(", "TO_CHAR(");
+                    queryParser.queryList[i] = queryLıne.Replace(date, date + ", 'Month'"); 
                     
 
 
                 }
 
-                if (queryParser.queryList[i].Contains("QUARTER("))
+                if (queryLıne.Contains("QUARTER("))
                 {
                     string date;
                     string[] temp;
 
-                    temp = queryParser.queryList[i].Split("(");
+                    temp = queryLıne.Split("(");
                     temp = temp[1].Split(")");
                     date = temp[0];
 
-                    queryParser.queryList[i] = queryParser.queryList[i].Replace("QUARTER(", "TO_NUMBER(TO_CHAR(");
-                    queryParser.queryList[i] = queryParser.queryList[i].Replace(date, date + ", 'Q'"); 
+                    queryLıne = queryLıne.Replace("QUARTER(", "TO_NUMBER(TO_CHAR(");
+                    queryParser.queryList[i] = queryLıne.Replace(date, date + ", 'Q'"); 
 
                 }
 
-                if (queryParser.queryList[i].Contains("SUBDATE("))
+                if (queryLıne.Contains("SUBDATE("))
                 {
                     string date, ınterval, value, unıt;
 
                     string[] temp;
 
-                    temp = queryParser.queryList[i].Split("(");
+                    temp = queryLıne.Split("(");
 
                     temp = temp[1].Split(",");
                     date = temp[0];
@@ -313,49 +313,49 @@ namespace SqlConverter.Converter
                     unıt = temp[0];
 
 
-                    queryParser.queryList[i] = queryParser.queryList[i] = queryParser.queryList[i].Replace("SUBDATE(", "");
-                    queryParser.queryList[i] = queryParser.queryList[i] = queryParser.queryList[i].Replace(",", " -");
-                    queryParser.queryList[i] = queryParser.queryList[i] = queryParser.queryList[i].Replace(" " + value, "'" + value + "'");
-                    queryParser.queryList[i] = queryParser.queryList[i] = queryParser.queryList[i].Replace(unıt + ")", unıt);
+                    queryParser.queryList[i] = queryLıne.Replace("SUBDATE(", "");
+                    queryParser.queryList[i] = queryLıne.Replace(",", " -");
+                    queryParser.queryList[i] = queryLıne.Replace(" " + value, "'" + value + "'");
+                    queryParser.queryList[i] = queryLıne.Replace(unıt + ")", unıt);
 
                 }
 
-                if (queryParser.queryList[i].Contains("TIME("))
+                if (queryLıne.Contains("TIME("))
                 {
-                    queryParser.queryList[i] = queryParser.queryList[i].Replace("TIME(", "TO_TIMESTAMP(");
+                    queryLıne = queryLıne.Replace("TIME(", "TO_TIMESTAMP(");
                 }
 
-                if (queryParser.queryList[i].Contains("WEEK("))
-                {
-                    string date;
-                    string[] temp;
-
-                    temp = queryParser.queryList[i].Split("(");
-                    temp = temp[1].Split(")");
-                    date = temp[0];
-
-
-                    queryParser.queryList[i] = queryParser.queryList[i].Replace("WEEK(", "TO_NUMBER(TO_CHAR(");
-                    queryParser.queryList[i] = queryParser.queryList[i].Replace(date, date + ", 'WW')");
-
-                }
-
-                if (queryParser.queryList[i].Contains("YEAR("))
+                if (queryLıne.Contains("WEEK("))
                 {
                     string date;
                     string[] temp;
 
-                    temp = queryParser.queryList[i].Split("(");
+                    temp = queryLıne.Split("(");
                     temp = temp[1].Split(")");
                     date = temp[0];
 
-                    queryParser.queryList[i] = queryParser.queryList[i].Replace("YEAR(", "EXTRACT(YEAR FROM ");
+
+                    queryLıne = queryLıne.Replace("WEEK(", "TO_NUMBER(TO_CHAR(");
+                    queryParser.queryList[i] = queryLıne.Replace(date, date + ", 'WW')");
 
                 }
 
-                if (queryParser.queryList[i].Contains("NOW()"))
+                if (queryLıne.Contains("YEAR("))
                 {
-                    queryParser.queryList[i] = queryParser.queryList[i].Replace("NOW()", "SYSDATE"); 
+                    string date;
+                    string[] temp;
+
+                    temp = queryLıne.Split("(");
+                    temp = temp[1].Split(")");
+                    date = temp[0];
+
+                    queryParser.queryList[i] = queryLıne.Replace("YEAR(", "EXTRACT(YEAR FROM ");
+
+                }
+
+                if (queryLıne.Contains("NOW()"))
+                {
+                    queryParser.queryList[i] =  queryLıne.Replace("NOW()", "SYSDATE"); 
                 }
 
             }

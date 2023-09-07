@@ -15,36 +15,36 @@ namespace SqlConverter.Converter
             {
                 string queryLıne = queryParser.queryList[i];
 
-                if (queryParser.queryList[i].Contains("CONVERT(")) 
+                if (queryLıne.Contains("CONVERT(")) 
                 {
                     string value, type;
                     string[] temp;
 
-                    temp = queryParser.queryList[i].Split("(");
+                    temp = queryLıne.Split("(");
                     temp = temp[1].Split(")");
 
                     value = temp[0];
                     type = temp[1];
 
-                    if (queryParser.queryList[i].Contains("USING"))
+                    if (queryLıne.Contains("USING"))
                     {
 
                     }
                     else
-                    {
-                        queryParser.queryList[i] = queryParser.queryList[i].Replace("CONVERT(", "CAST(");
-                        queryParser.queryList[i] = queryParser.queryList[i].Replace(",", " AS ");
+                    { 
+                        queryLıne = queryLıne.Replace("CONVERT(", "CAST(");
+                        queryParser.queryList[i] = queryLıne.Replace(",", " AS ");
 
                     }
    
                 }
 
-                if (queryParser.queryList[i].Contains("IF("))
+                if (queryLıne.Contains("IF("))
                 {
                     string condition, value_if_true, value_if_false;
                     string[] temp;
 
-                    temp = queryParser.queryList[i].Split("(");
+                    temp = queryLıne.Split("(");
 
                     temp = temp[1].Split(")");
 
@@ -55,12 +55,12 @@ namespace SqlConverter.Converter
                     value_if_false = temp[2];
 
 
-                    queryParser.queryList[i] = queryParser.queryList[i].Replace("IF(", "CASE WHEN ");
-                    queryParser.queryList[i] = queryParser.queryList[i].Replace(condition + ",", condition + " THEN ");
+                    queryLıne = queryLıne.Replace("IF(", "CASE WHEN ");
+                    queryLıne = queryLıne.Replace(condition + ",", condition + " THEN ");
      
-                    queryParser.queryList[i] = queryParser.queryList[i].Replace(value_if_true + ",", value_if_true + " ELSE ");
-                    queryParser.queryList[i] = queryParser.queryList[i].Replace(value_if_false + ")", value_if_false + " END ");
-                    queryParser.queryList[i] = queryParser.queryList[i].Replace(",", "");
+                    queryLıne = queryLıne.Replace(value_if_true + ",", value_if_true + " ELSE ");
+                    queryLıne = queryLıne.Replace(value_if_false + ")", value_if_false + " END ");
+                    queryParser.queryList[i] = queryLıne.Replace(",", "");
                     
 
 
@@ -71,9 +71,9 @@ namespace SqlConverter.Converter
                     queryParser.queryList[i] = queryLıne.Replace("IFNULL(", "NVL(");
                 }
 
-                if (queryParser.queryList[i].Contains("CEILING("))
+                if (queryLıne.Contains("CEILING("))
                 {
-                    queryParser.queryList[i] = queryParser.queryList[i].Replace("CEILING(", "CEIL(");
+                    queryParser.queryList[i] = queryLıne.Replace("CEILING(", "CEIL(");
                 }
 
             }

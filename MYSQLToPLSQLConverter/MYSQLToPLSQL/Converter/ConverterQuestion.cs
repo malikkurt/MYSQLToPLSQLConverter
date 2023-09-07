@@ -12,9 +12,11 @@ namespace SqlConverter
         {
             for (int i = 0; i < queryParser.queryList.Count; i++)
             {
-                if (queryParser.queryList[i].Contains(" ?"))
+                string queryLıne = queryParser.queryList[i];
+
+                if (queryLıne.Contains(" ?"))
                 {
-                    queryParser.queryList[i] = queryParser.queryList[i].Replace("?", ":");
+                    queryParser.queryList[i] = queryLıne.Replace("?", ":");
                 }
 
             }

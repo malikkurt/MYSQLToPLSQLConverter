@@ -10,6 +10,7 @@ namespace SqlConverter.Converter
     {
         public override void Convert(QueryParser queryParser)
         {
+            // QueryLıne kodunu buraya koymadım zaten bütün text için geçerli bu kod
 
             for (int i = 0; i < queryParser.queryList.Count; i++)
             {

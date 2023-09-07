@@ -31,8 +31,8 @@
             label1 = new Label();
             ConverterButton = new Button();
             QueryInput = new TextBox();
-            label2 = new Label();
             QueryOuput = new TextBox();
+            label2 = new Label();
             SuspendLayout();
             // 
             // label1
@@ -48,6 +48,7 @@
             // 
             // ConverterButton
             // 
+            ConverterButton.Font = new Font("Segoe UI", 16.2F, FontStyle.Regular, GraphicsUnit.Point);
             ConverterButton.Location = new Point(838, 219);
             ConverterButton.Name = "ConverterButton";
             ConverterButton.Size = new Size(150, 75);
@@ -65,16 +66,6 @@
             QueryInput.TabIndex = 2;
             QueryInput.TextChanged += QueryInput_TextChanged;
             // 
-            // label2
-            // 
-            label2.AutoSize = true;
-            label2.BorderStyle = BorderStyle.FixedSingle;
-            label2.Location = new Point(1094, 24);
-            label2.Name = "label2";
-            label2.Size = new Size(57, 22);
-            label2.TabIndex = 3;
-            label2.Text = "Oracle:";
-            // 
             // QueryOuput
             // 
             QueryOuput.Location = new Point(1094, 64);
@@ -83,6 +74,19 @@
             QueryOuput.Name = "QueryOuput";
             QueryOuput.Size = new Size(747, 907);
             QueryOuput.TabIndex = 4;
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.BackColor = SystemColors.Control;
+            label2.BorderStyle = BorderStyle.FixedSingle;
+            label2.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            label2.Location = new Point(1094, 24);
+            label2.Name = "label2";
+            label2.Size = new Size(57, 22);
+            label2.TabIndex = 3;
+            label2.Text = "Oracle:";
+            label2.Click += label2_Click;
             // 
             // Form1
             // 
@@ -106,8 +110,8 @@
         private Label label1;
         private Button ConverterButton;
         private TextBox QueryInput;
-        private Label label2;
         private Label QueryResult;
         private TextBox QueryOuput;
+        private Label label2;
     }
 }
