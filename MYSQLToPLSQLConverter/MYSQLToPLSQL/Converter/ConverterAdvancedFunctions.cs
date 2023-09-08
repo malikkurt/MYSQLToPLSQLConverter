@@ -1,4 +1,4 @@
-﻿using System;
+﻿ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,41 +10,37 @@ namespace SqlConverter.Converter
     {
         public override void Convert(QueryParser queryParser)
         {
-
             for (int i = 0; i < queryParser.queryList.Count; i++)
             {
-                string queryLıne = queryParser.queryList[i];
+                string currentQuery = queryParser.queryList[i];
 
-                if (queryLıne.Contains("CONVERT(")) 
+                if (currentQuery.Contains("CONVERT(")) 
                 {
                     string value, type;
                     string[] temp;
 
-                    temp = queryLıne.Split("(");
+                    temp = currentQuery.Split("(");
                     temp = temp[1].Split(")");
 
-                    value = temp[0];
-                    type = temp[1];
-
-                    if (queryLıne.Contains("USING"))
+                    if (currentQuery.Contains("USING"))
                     {
 
                     }
                     else
                     { 
-                        queryLıne = queryLıne.Replace("CONVERT(", "CAST(");
-                        queryParser.queryList[i] = queryLıne.Replace(",", " AS ");
+                        currentQuery = currentQuery.Replace("CONVERT(", "CAST(");
+                        queryParser.queryList[i] = currentQuery.Replace(",", " AS ");
 
                     }
    
                 }
 
-                if (queryLıne.Contains("IF("))
+                if (currentQuery.Contains("IF("))
                 {
                     string condition, value_if_true, value_if_false;
                     string[] temp;
 
-                    temp = queryLıne.Split("(");
+                    temp = currentQuery.Split("(");
 
                     temp = temp[1].Split(")");
 
@@ -55,25 +51,25 @@ namespace SqlConverter.Converter
                     value_if_false = temp[2];
 
 
-                    queryLıne = queryLıne.Replace("IF(", "CASE WHEN ");
-                    queryLıne = queryLıne.Replace(condition + ",", condition + " THEN ");
+                    currentQuery = currentQuery.Replace("IF(", "CASE WHEN ");
+                    currentQuery = currentQuery.Replace(condition + ",", condition + " THEN ");
      
-                    queryLıne = queryLıne.Replace(value_if_true + ",", value_if_true + " ELSE ");
-                    queryLıne = queryLıne.Replace(value_if_false + ")", value_if_false + " END ");
-                    queryParser.queryList[i] = queryLıne.Replace(",", "");
+                    currentQuery = currentQuery.Replace(value_if_true + ",", value_if_true + " ELSE ");
+                    currentQuery = currentQuery.Replace(value_if_false + ")", value_if_false + " END ");
+                    queryParser.queryList[i] = currentQuery.Replace(",", "");
                     
 
 
                 }
 
-                if (queryLıne.Contains("IFNULL("))
+                if (currentQuery.Contains("IFNULL("))
                 {
-                    queryParser.queryList[i] = queryLıne.Replace("IFNULL(", "NVL(");
+                    queryParser.queryList[i] = currentQuery.Replace("IFNULL(", "NVL(");
                 }
 
-                if (queryLıne.Contains("CEILING("))
+                if (currentQuery.Contains("CEILING("))
                 {
-                    queryParser.queryList[i] = queryLıne.Replace("CEILING(", "CEIL(");
+                    queryParser.queryList[i] = currentQuery.Replace("CEILING(", "CEIL(");
                 }
 
             }

@@ -12,21 +12,21 @@ namespace SqlConverter.Converter
         {
             for (int i = 0; i < queryParser.queryList.Count; i++)
             {
-                string queryLıne = queryParser.queryList[i];
+                string currentQuery = queryParser.queryList[i];
 
-                if (queryLıne.Contains("CHAR_LENGTH("))
+                if (currentQuery.Contains("CHAR_LENGTH("))
                 {
-                    queryParser.queryList[i] = queryLıne.Replace("CHAR_LENGTH(", "LENGTH(");
+                    queryParser.queryList[i] = currentQuery.Replace("CHAR_LENGTH(", "LENGTH(");
                 }
 
-                if (queryLıne.Contains("CHARACTER_LENGTH("))
+                if (currentQuery.Contains("CHARACTER_LENGTH("))
                 {
-                    queryParser.queryList[i] = queryLıne.Replace("CHARACTER_LENGTH(", "LENGTH(");
+                    queryParser.queryList[i] = currentQuery.Replace("CHARACTER_LENGTH(", "LENGTH(");
                 }
                 
-                if (queryLıne.Contains("CONCAT("))
+                if (currentQuery.Contains("CONCAT("))
                 {
-                    if (queryLıne.Contains("GROUP_CONCAT("))
+                    if (currentQuery.Contains("GROUP_CONCAT("))
                     {
                         string distinct, orderBy, separator;
                         string[] temp;
@@ -80,12 +80,12 @@ namespace SqlConverter.Converter
                     {
                         string[] expressıon, temp;
 
-                        temp = queryLıne.Split("CONCAT(");
+                        temp = currentQuery.Split("CONCAT(");
                         temp = temp[1].Split(")");
 
                         
-                        queryLıne = queryLıne.Replace("CONCAT(" + temp[0] + ")", " (" + temp[0].Replace(",", " ||") + ")");
-                        queryParser.queryList[i] = queryLıne.Replace("COLLATE utf8_unicode_ci", "");
+                        currentQuery = currentQuery.Replace("CONCAT(" + temp[0] + ")", " (" + temp[0].Replace(",", " ||") + ")");
+                        queryParser.queryList[i] = currentQuery.Replace("COLLATE utf8_unicode_ci", "");
                     }
 
                 }

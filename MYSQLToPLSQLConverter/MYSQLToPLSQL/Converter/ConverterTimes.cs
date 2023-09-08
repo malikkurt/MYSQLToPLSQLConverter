@@ -13,31 +13,31 @@ namespace SqlConverter.Converter
 
             for (int i = 0; i < queryParser.queryList.Count; i++)
             {
-                string queryLıne = queryParser.queryList[i];
+                string currentQuery = queryParser.queryList[i];
 
-                if (queryLıne.Contains("CURTIME()"))
+                if (currentQuery.Contains("CURTIME()"))
                 {
-                    queryParser.queryList[i] = queryLıne.Replace("CURTIME()", "SYSTIMESTAMP");
+                    queryParser.queryList[i] = currentQuery.Replace("CURTIME()", "SYSTIMESTAMP");
                 }
 
-                if (queryLıne.Contains("CURRENT_TIME"))
+                if (currentQuery.Contains("CURRENT_TIME"))
                 {
-                    queryParser.queryList[i] = queryLıne.Replace("CURRENT_TIME", "SYSTIMESTAMP");
+                    queryParser.queryList[i] = currentQuery.Replace("CURRENT_TIME", "SYSTIMESTAMP");
                 }
 
-                if (queryLıne.Contains("CURRENT_TIME()"))
+                if (currentQuery.Contains("CURRENT_TIME()"))
                 {
-                    queryParser.queryList[i] = queryLıne.Replace("CURRENT_TIME()", "SYSTIMESTAMP");
+                    queryParser.queryList[i] = currentQuery.Replace("CURRENT_TIME()", "SYSTIMESTAMP");
                 }
 
-                if (queryLıne.Contains("CURRENT_TIMESTAMP"))
+                if (currentQuery.Contains("CURRENT_TIMESTAMP"))
                 {
-                    queryParser.queryList[i] = queryLıne.Replace("CURRENT_TIMESTAMP", "CURRENT_TIMESTAMP");
+                    queryParser.queryList[i] = currentQuery.Replace("CURRENT_TIMESTAMP", "CURRENT_TIMESTAMP");
                 }
 
-                if (queryLıne.Contains("CURRENT_TIMESTAMP()"))
+                if (currentQuery.Contains("CURRENT_TIMESTAMP()"))
                 {
-                    queryParser.queryList[i] = queryLıne.Replace("CURRENT_TIMESTAMP()", "CURRENT_TIMESTAMP");
+                    queryParser.queryList[i] = currentQuery.Replace("CURRENT_TIMESTAMP()", "CURRENT_TIMESTAMP");
                 }
 
             }
