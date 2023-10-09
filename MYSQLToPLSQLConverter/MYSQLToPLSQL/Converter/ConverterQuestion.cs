@@ -10,16 +10,12 @@ namespace SqlConverter
     {
         public override void Convert(QueryParser queryParser)
         {
-            for (int i = 0; i < queryParser.queryList.Count; i++)
+
+            if (queryParser.formattedQuery.Contains("?"))
             {
-                string currentQuery = queryParser.queryList[i];
-
-                if (currentQuery.Contains(" ?"))
-                {
-                    queryParser.queryList[i] = currentQuery.Replace("?", ":");
-                }
-
+                queryParser.formattedQuery = queryParser.formattedQuery.Replace("?", ":");
             }
+            
             _nextConverterHandler.Convert(queryParser);
         }
 

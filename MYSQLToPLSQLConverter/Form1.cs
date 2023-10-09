@@ -47,10 +47,10 @@ namespace MYSQLToPLSQLConverter
                 new ConverterDateFunctions(),
                 new ConverterSmallDiff(),
                 new ConverterQuestion(),
-                new ConverterTimes(),
                 new ConverterAdvancedFunctions(),
                 new ConverterSQLReferences(),
-                new ConverterTableName()
+                new ConverterTableName(),
+                new ConverterTimes()
             };
 
             for (int i = 0; i < handlers.Count - 1; i++)
@@ -59,18 +59,10 @@ namespace MYSQLToPLSQLConverter
             }
             handlers[0].Convert(queryParser);
 
-            StringBuilder convertedQueries = new StringBuilder();
-
-            foreach (string s in queryParser.queryList)
-            {
-
-                string cleanQuery = s.Replace("\r\n", "");
 
 
-                convertedQueries.AppendLine(cleanQuery);
-            }
 
-            return convertedQueries.ToString();
+            return queryParser.formattedQuery.ToString();
         }
 
         private void QueryInput_TextChanged(object sender, EventArgs e)
