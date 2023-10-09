@@ -10,24 +10,18 @@ namespace SqlConverter.Converter
     {
         public override void Convert(QueryParser queryParser)
         {
-            // currentQuery kodunu buraya koymadım zaten bütün text için geçerli bu kod
 
-            for (int i = 0; i < queryParser.queryList.Count; i++)
-            {
-                if (queryParser.queryList[i].Contains("_DBA_"))
-                {
-                    queryParser.queryList[i] = queryParser.queryList[i].Replace("_DBA_", "_DBA.");
-                }
-
-                if (queryParser.queryList[i].Contains("FRAMEWORK_"))
-                {
-                    queryParser.queryList[i] = queryParser.queryList[i].Replace("FRAMEWORK_", "FRAMEWORK.");
-
-                }
-
-                
+            if (queryParser.formattedQuery.Contains("_DBA_")){
+                queryParser.formattedQuery = queryParser.formattedQuery.Replace("_DBA_", "_DBA.");
             }
-            //_nextConverterHandler.Convert(queryParser);
+
+            if (queryParser.formattedQuery.Contains("_DBA_"))
+            {
+                queryParser.formattedQuery = queryParser.formattedQuery.Replace("FRAMEWORK_", "FRAMEWORK.");
+            }
+
+            _nextConverterHandler.Convert(queryParser);
+            }
         }
     }
-}
+
