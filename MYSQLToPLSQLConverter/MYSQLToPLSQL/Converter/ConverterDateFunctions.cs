@@ -147,65 +147,81 @@ namespace SqlConverter.Converter
 
             //    }
 
-            //    if (currentQuery.Contains("DAY("))
-            //    {
-            //        string date;
-            //        string[] temp;
 
-            //        temp = currentQuery.Split("(");
-            //        temp = temp[1].Split(")");
-            //        date = temp[0];
+            if (queryParser.formattedQuery.Contains("DAY"))
+            {
 
+                if (queryParser.formattedQuery.Contains("DAYNAME"))
+                {
+                    string date;
+                    string[] temp;
 
-            //        currentQuery = currentQuery.Replace("DAY(","EXTRACT(");
-            //        queryParser.queryList[i] = currentQuery.Replace(date, "DAY FROM " + date);
+                    temp = queryParser.formattedQuery.Split("DAYNAME");
+                    temp = temp[1].Split(")");
+                    date = temp[0].Remove(0,1);
 
-            //    }
+                    queryParser.formattedQuery = queryParser.formattedQuery.Replace("DAYNAME", "TO_CHAR");
+                    queryParser.formattedQuery = queryParser.formattedQuery.Replace(date, date + ", 'DAY'");
 
-            //    if (currentQuery.Contains("DAYNAME("))
-            //    {
-            //        string date;
-            //        string[] temp;
+                }
+                    
+                if (queryParser.formattedQuery.Contains("DAYOFWEEK(") || queryParser.formattedQuery.Contains("DAYOFWEEK ("))
+                {
+                    string date;
+                    string[] temp;
 
-            //        temp = currentQuery.Split("("); 
-            //        temp = temp[1].Split(")");
-            //        date = temp[0];
+                    temp = queryParser.formattedQuery.Split("DAYOFWEEK");
+                    temp = temp[1].Split(")");
+                    date = temp[0].Remove(0, 1);
 
+                    queryParser.formattedQuery = queryParser.formattedQuery.Replace("DAYOFWEEK", "TO_NUMBER(TO_CHAR");
+                    queryParser.formattedQuery = queryParser.formattedQuery.Replace(date, date + ", 'D')");
 
-            //        currentQuery = currentQuery.Replace("DAYNAME(", "TO_CHAR(");
-            //        queryParser.queryList[i] = currentQuery.Replace(date, date+ ", 'DAY'");
+                }
 
-            //    }
+                if (queryParser.formattedQuery.Contains("DAYOFWEEK(") || queryParser.formattedQuery.Contains("DAYOFWEEK ("))
+                {
+                    string date;
+                    string[] temp;
 
-            //    if (currentQuery.Contains("DAYOFWEEK("))
-            //    {
-            //        string date;
-            //        string[] temp;
+                    temp = queryParser.formattedQuery.Split("DAYOFWEEK");
+                    temp = temp[1].Split(")");
+                    date = temp[0].Remove(0, 1);
 
-            //        temp = currentQuery.Split("(");
-            //        temp = temp[1].Split(")");
-            //        date = temp[0];
+                    queryParser.formattedQuery = queryParser.formattedQuery.Replace("DAYOFWEEK", "TO_NUMBER(TO_CHAR");
+                    queryParser.formattedQuery = queryParser.formattedQuery.Replace(date, date + ", 'D')");
 
+                }
 
-            //        currentQuery = currentQuery.Replace("DAYOFWEEK(", "TO_NUMBER(TO_CHAR(");
-            //        queryParser.queryList[i] = currentQuery.Replace(date, date + ", 'D')");
+                if (queryParser.formattedQuery.Contains("DAYOFYEAR(") || queryParser.formattedQuery.Contains("DAYOFYEAR ("))
+                {
+                    string date;
+                    string[] temp;
 
-            //    }
+                    temp = queryParser.formattedQuery.Split("DAYOFYEAR");
+                    temp = temp[1].Split(")");
+                    date = temp[0].Remove(0, 1);
 
-            //    if (currentQuery.Contains("DAYOFYEAR("))
-            //    {
-            //        string date;
-            //        string[] temp;
+                    queryParser.formattedQuery = queryParser.formattedQuery.Replace("DAYOFYEAR", "TO_NUMBER(TO_CHAR");
+                    queryParser.formattedQuery = queryParser.formattedQuery.Replace(date, date + ", 'DDD')");
 
-            //        temp = currentQuery.Split("(");
-            //        temp = temp[1].Split(")");
-            //        date = temp[0];
+                }
 
+                else if (queryParser.formattedQuery.Contains("DAY(") || queryParser.formattedQuery.Contains("DAY ("))
+                {
+                    string date;
+                    string[] temp;
 
-            //        currentQuery = currentQuery.Replace("DAYOFYEAR(", "TO_NUMBER(TO_CHAR(");
-            //        queryParser.queryList[i] = currentQuery.Replace(date, date + ", 'DDD')");
+                    temp = queryParser.formattedQuery.Split("DAY");
+                    temp = temp[1].Split(")");
+                    date = temp[0].Remove(0, 1);
 
-            //    }
+                    queryParser.formattedQuery = queryParser.formattedQuery.Replace("DAY", "EXTRACT");
+                    queryParser.formattedQuery = queryParser.formattedQuery.Replace(date,"DAY FROM "+date);
+                }
+            }
+
+            
 
             //    if (currentQuery.Contains("HOUR("))
             //    {
