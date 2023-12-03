@@ -28,25 +28,21 @@ namespace SqlConverter.Converter
 
             }
 
-            
+            if (queryParser.formattedQuery.Contains("IF(") || queryParser.formattedQuery.Contains("IF (")) 
+            {
+                string condition, value_if_true, value_if_false;
+                string[] temp, temp_1;
 
-            
+                temp = queryParser.formattedQuery.Split("IF");
+                temp_1 = temp[1].Split(")");
+                temp = temp_1[0].Split(",");
+                condition = temp[0];
+                value_if_true = temp[1];
+                value_if_false = temp[2];
 
-            //if(queryParser.formattedQuery.Contains("IF(") || queryParser.formattedQuery.Contains("IF (")) burada sorun var 
-            //{
-            //    string condition, value_if_true, value_if_false;
-            //    string[] temp,temp_1;
+                queryParser.formattedQuery = queryParser.formattedQuery.Replace("IF" + temp_1[0], "CASE WHEN " + condition + " THEN" + value_if_true + "ELSE" + value_if_false);
 
-            //    temp = queryParser.formattedQuery.Split("IF");
-            //    temp_1 = temp[1].Split(")");
-            //    temp = temp_1[0].Split(",");
-            //    condition = temp[0];
-            //    value_if_true = temp[1];
-            //    value_if_false = temp[2];
-
-            //    queryParser.formattedQuery = queryParser.formattedQuery.Replace("IF" + temp_1[0], "CASE WHEN " + condition + "THEN" + value_if_true + "ELSE" + value_if_false); 
-
-            //}
+            }
 
             if (queryParser.formattedQuery.Contains("IFNULL(") || queryParser.formattedQuery.Contains("IFNULL ("))
             {
@@ -57,8 +53,6 @@ namespace SqlConverter.Converter
             {
                 queryParser.formattedQuery = queryParser.formattedQuery.Replace("CEILING", "CEIL");
             }
-
-            
 
             _nextConverterHandler.Convert(queryParser);
         }

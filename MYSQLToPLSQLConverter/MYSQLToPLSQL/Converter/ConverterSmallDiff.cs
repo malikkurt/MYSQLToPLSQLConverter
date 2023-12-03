@@ -11,77 +11,17 @@ namespace SqlConverter.Converter
         public override void Convert(QueryParser queryParser)
         {
 
-            if (queryParser.formattedQuery.Contains("LCASE(") || queryParser.formattedQuery.Contains("LCASE (")){
 
-                queryParser.formattedQuery = queryParser.formattedQuery.Replace("LCASE", "LOWER");
-
-            }   
-
-            //    if (currentQuery.Contains("LEFT("))
-            //    {
-            //        queryParser.queryList[i] = currentQuery.Replace("LEFT(", "SUBSTR(");
-
-            //        string fırstunıt;
-            //        string[] temp;
-
-            //        temp = currentQuery.Split("(");
-
-            //        temp = temp[1].Split(",");
-
-            //        fırstunıt = temp[0];
-
-            //        queryParser.queryList[i] = currentQuery.Replace(fırstunıt, fırstunıt + ", 1");
-
-            //    }
+            
 
             if(queryParser.formattedQuery.Contains("LOCATE(") || queryParser.formattedQuery.Contains("LOCATE (")){
 
                 queryParser.formattedQuery = queryParser.formattedQuery.Replace("LOCATE", "INSTR");
             }
 
-            //    if (queryParser.queryList[i].Contains("POSITION("))
-            //    {
-            //        //queryParser.queryList[i] = queryParser.queryList[i].Replace(" POSITION(", " INSTR");
-
-            //        //string subString, lastString;
-            //        //string[] temp;
 
 
-            //        //temp = queryParser.queryList[i].Split("(");
-            //        //temp = temp[1].Split(")");
-            //        ////temp = temp[0].Split(" ");
 
-            //        //foreach (string s in temp)
-            //        //{
-            //        //    Console.WriteLine(s);
-            //        //}
-                   
-            //        //subString = temp[0];
-            //        //lastString = temp[2];
-
-                    
-
-            //        //queryParser.queryList[i] = queryParser.queryList[i].Replace(subString + " IN", lastString);
-                   
-
-
-            //    }
-
-            //    if (currentQuery.Contains("REPEAT("))
-            //    {
-            //        string text, number;
-            //        string[] temp;
-
-            //        temp = currentQuery.Split("(");
-            //        temp = temp[1].Split(")");
-            //        temp = temp[0].Split(",");
-            //        text = temp[0];
-            //        number = temp[1];
-
-            //        currentQuery = currentQuery.Replace("REPEAT(", "RPAD(");
-            //        queryParser.queryList[i] = currentQuery.Replace(number + ")", " LENGTH(" +text+") * "+number+", "+ text);
-
-                   
             //    }
 
             //    if (currentQuery.Contains("RIGHT("))
@@ -104,8 +44,8 @@ namespace SqlConverter.Converter
             //        queryParser.queryList[i] = currentQuery.Replace(number, " GREATEST(-LENGTH("+text+"), -" +number +")");
 
             //    }
-               
-            if(queryParser.formattedQuery.Contains("SPACE(") || queryParser.formattedQuery.Contains("SPACE (")){
+
+            if (queryParser.formattedQuery.Contains("SPACE(") || queryParser.formattedQuery.Contains("SPACE (")){
 
                 queryParser.formattedQuery = queryParser.formattedQuery.Replace("SPACE(", "RPAD(' ',");
                 queryParser.formattedQuery = queryParser.formattedQuery.Replace("SPACE (", "RPAD(' ',");

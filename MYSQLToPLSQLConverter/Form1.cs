@@ -48,7 +48,7 @@ namespace MYSQLToPLSQLConverter
                 new ConverterSmallDiff(),
                 new ConverterQuestion(),
                 new ConverterAdvancedFunctions(),
-                new ConverterSQLReferences(),
+                new ConverterStringFunctions(),
                 new ConverterTableName(),
                 new ConverterTimes()
             };

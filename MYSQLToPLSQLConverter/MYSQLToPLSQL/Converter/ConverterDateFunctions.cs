@@ -10,9 +10,6 @@ namespace SqlConverter.Converter
     {
         public override void Convert(QueryParser queryParser)
         {
-            //for (int i = 0; i < queryParser.queryList.Count; i++)
-            //{
-            //    string currentQuery = queryParser.queryList[i];
 
             if (queryParser.formattedQuery.Contains("CURDATE()") || queryParser.formattedQuery.Contains("CURDATE ()"))
             {
@@ -26,101 +23,91 @@ namespace SqlConverter.Converter
 
             }
 
+            if (queryParser.formattedQuery.Contains("DATE"))
+            {
+      
+                if(queryParser.formattedQuery.Contains("ADDDATE(") || queryParser.formattedQuery.Contains("ADDDATE ("))
+                {
+                    string date, days, value, addunit, baseTemp;
+                    string[] temp;
 
 
-            //    if (currentQuery.Contains("DATE("))
-            //    {
-            //        if (currentQuery.Contains("SYSDATE("))
-            //        {
-            //            queryParser.queryList[i] = currentQuery.Replace("SYSDATE()", "SYSDATE");
-            //            continue;
-            //        }
-            //        if (currentQuery.Contains("ADDDATE("))
-            //        {
-            //            string date, days, value, addunit, ınterval;
-            //            string[] temp;
+                    temp = queryParser.formattedQuery.Split("ADDDATE");
+                    baseTemp = temp[1];
 
-            //            temp = currentQuery.Split("(");
+                    temp = temp[1].Split(")");
+                    temp = temp[0].Split(",");
 
-            //            temp = temp[1].Split(",");
+                    date = temp[0].Remove(0,1);
 
-            //            temp = temp[1].Split(" ");
-            //            ınterval = temp[1];
-            //            value = temp[2];
+                    temp = temp[1].Split("INTERVAL");
+                    temp = temp[1].Split(" ");
+                    value = temp[1];
+                    addunit = temp[2];
 
-            //            temp = temp[3].Split(")");
-            //            addunit = temp[0];
-
-            //            currentQuery = currentQuery.Replace(",", " +");
-
-            //            if (value.ToString().Contains("'"))
-            //            {
-            //                currentQuery = currentQuery.Replace("ADDDATE(", "");
-            //                currentQuery = currentQuery.Replace(ınterval.ToString(), "NUMTODS" + ınterval.ToString());
-            //                currentQuery = currentQuery.Replace(value.ToString(), "(" + value.ToString());
-            //                queryParser.queryList[i] = currentQuery.Replace(addunit.ToString(), addunit.ToString());
-            //            }
-            //            else
-            //            {
-            //                currentQuery = currentQuery.Replace("ADDDATE(", "");
-            //                currentQuery = currentQuery.Replace(value.ToString(), "'" + value.ToString() + "'");
-            //                queryParser.queryList[i] = currentQuery.Replace(addunit.ToString() + ")", addunit.ToString());
-            //            }
-
-            //        }
-            //        else
-            //        {
-            //            queryParser.queryList[i] = currentQuery.Replace("DATE(", "TO_DATE(");
-
-            //        }
-
-            //    }
-
-            //    if (currentQuery.Contains("DATEDIFF("))
-            //    {
-            //        string date1, date2;
-            //        string[] temp;
-
-            //        temp = currentQuery.Split("(");
-            //        temp = temp[1].Split(",");
-            //        date1 = temp[0];
-            //        temp = temp[1].Split(")");
-            //        date2 = temp[0];
-
-            //        currentQuery = currentQuery.Replace("DATEDIFF", "");
-            //        currentQuery = currentQuery.Replace("("+ date1," "+date1);
-            //        currentQuery = currentQuery.Replace(date2+")",date2);
-            //        queryParser.queryList[i] = currentQuery.Replace(",", " -");
+                    queryParser.formattedQuery = queryParser.formattedQuery.Replace(baseTemp, date + " + INTERVAL '" + value + "' " + addunit );
+                    queryParser.formattedQuery = queryParser.formattedQuery.Replace("ADDDATE", "");
 
 
-            //    }
+                }
+                if(queryParser.formattedQuery.Contains("SYSDATE(") || queryParser.formattedQuery.Contains("SYSDATE ("))
+                {
+                    // BURAYA EKKLENTİ GELİCEK 
+                }
+                else if (queryParser.formattedQuery.Contains("DATE"))
+                {
+                    queryParser.formattedQuery = queryParser.formattedQuery.Replace("DATE (", "TO_DATE (");
+                    queryParser.formattedQuery = queryParser.formattedQuery.Replace("DATE(", "TO_DATE(");
 
-            //    if (currentQuery.Contains("DATE_ADD("))
-            //    {
-            //        string date, ınterval, value, addunıt;
-            //        string[] temp;
+                }
+            }
 
-            //        temp = currentQuery.Split("(");
+            if(queryParser.formattedQuery.Contains("DATEDIFF(") || queryParser.formattedQuery.Contains("DATEDIFF ("))
+            {
+                string date_1, date_2;
+                string[] temp;
 
-            //        temp = temp[1].ToString().Split(",");
+                temp = queryParser.formattedQuery.Split("DATEDIFF");
 
-            //        temp = temp[1].ToString().Split(" ");
+                temp = temp[1].Split(')');
 
-            //        value = temp[2];
+                temp = temp[0].Split(",");
+
+                date_1 = temp[0].Remove(0, 1);
+                date_2 = temp[1];
 
 
-            //        currentQuery = currentQuery.Replace(",", " +");
-            //        queryParser.queryList[i] = currentQuery.Replace(" " + value.ToString(), " '" + value.ToString() + "'");
+                queryParser.formattedQuery = queryParser.formattedQuery.Replace("(" + date_1 + "," + date_2 + ")", date_1 + "-" + date_2);
+                queryParser.formattedQuery = queryParser.formattedQuery.Replace("DATEDIFF", "");
 
-            //    }
 
-        
+            }
 
+            if (queryParser.formattedQuery.Contains("DATE_ADD"))
+            {
+                string date, value, addunit,baseTemp,afterTemp;
+                string[] temp;
+
+                temp = queryParser.formattedQuery.Split("DATE_ADD");
+                baseTemp = temp[1];
+                
+
+                temp = temp[1].Split(")");
+                temp = temp[0].Split("INTERVAL");
+                temp = temp[1].Split(" ");
+                value = temp[1];
+
+
+                afterTemp = baseTemp.Replace(value, "'" + value + "'");
+
+                queryParser.formattedQuery = queryParser.formattedQuery.Replace(baseTemp, afterTemp);
+               
+            }
+            
             if (queryParser.formattedQuery.Contains("DATE_FORMAT"))
             {
                 queryParser.formattedQuery = queryParser.formattedQuery.Replace("DATE_FORMAT", "TO_CHAR");
             }
-
 
             //    if (currentQuery.Contains("DATE_SUB("))
             //    {
@@ -221,20 +208,18 @@ namespace SqlConverter.Converter
                 }
             }
 
-            
+            if(queryParser.formattedQuery.Contains("HOUR(") || queryParser.formattedQuery.Contains("HOUR ("))
+            {
+                string datetıme;
+                string[] temp;
 
-            //    if (currentQuery.Contains("HOUR("))
-            //    {
-            //        string date;
-            //        string[] temp;
+                temp = queryParser.formattedQuery.Split("HOUR");
+                temp = temp[1].Split(")");
+                datetıme = temp[0].Remove(0,1);
 
-            //        temp = currentQuery.Split("(");
-            //        temp = temp[1].Split(")");
-            //        date = temp[0];
-
-
-            //        queryParser.queryList[i] = queryParser.queryList[i].Replace("HOUR(", "EXTRACT(HOUR FROM ");
-            //    }
+                queryParser.formattedQuery = queryParser.formattedQuery.Replace("HOUR", "EXTRACT");
+                queryParser.formattedQuery = queryParser.formattedQuery.Replace(datetıme, "HOUR FROM " + datetıme);
+            }
 
             //    if (currentQuery.Contains("MICROSECOND("))
             //    {
@@ -251,63 +236,58 @@ namespace SqlConverter.Converter
 
             //    }
 
-            //    if (currentQuery.Contains("MINUTE("))
-            //    {
-            //        string date;
-            //        string[] temp;
+            if (queryParser.formattedQuery.Contains("MINUTE(") || queryParser.formattedQuery.Contains("MINUTE ("))
+            {
+                string datetıme;
+                string[] temp;
 
-            //        temp = currentQuery.Split("(");
-            //        temp = temp[1].Split(")");
-            //        date = temp[0];
+                temp = queryParser.formattedQuery.Split("MINUTE");
+                temp = temp[1].Split(")");
+                datetıme = temp[0].Remove(0, 1);
 
+                queryParser.formattedQuery = queryParser.formattedQuery.Replace("MINUTE", "EXTRACT");
+                queryParser.formattedQuery = queryParser.formattedQuery.Replace(datetıme, "MINUTE FROM " + datetıme);
+            }
 
-            //        queryParser.queryList[i] = currentQuery.Replace("MINUTE(", "EXTRACT(MINUTE FROM ");
+            if (queryParser.formattedQuery.Contains("MONTH(") || queryParser.formattedQuery.Contains("MONTH ("))
+            {
+                string datetıme;
+                string[] temp;
 
+                temp = queryParser.formattedQuery.Split("MONTH");
+                temp = temp[1].Split(")");
+                datetıme = temp[0].Remove(0, 1);
 
-            //    }
+                queryParser.formattedQuery = queryParser.formattedQuery.Replace("MONTH", "EXTRACT");
+                queryParser.formattedQuery = queryParser.formattedQuery.Replace(datetıme, "MONTH FROM " + datetıme);
+            }
 
-            //    if (currentQuery.Contains("MONTH("))
-            //    {
-            //        string date;
-            //        string[] temp;
+            if (queryParser.formattedQuery.Contains("MONTHNAME(") || queryParser.formattedQuery.Contains("MONTHNAME ("))
+            {
+                string datetıme;
+                string[] temp;
 
-            //        temp = currentQuery.Split("(");
-            //        temp = temp[1].Split(")");
-            //        date = temp[0];
+                temp = queryParser.formattedQuery.Split("MONTHNAME");
+                temp = temp[1].Split(")");
+                datetıme = temp[0].Remove(0, 1);
 
-            //        queryParser.queryList[i] = currentQuery.Replace("MONTH(", "EXTRACT(MONTH FROM ");
+                queryParser.formattedQuery = queryParser.formattedQuery.Replace("MONTHNAME", "TO_CHAR");
+                queryParser.formattedQuery = queryParser.formattedQuery.Replace(datetıme, datetıme + ", 'Month'");
+            }
 
-            //    }
+            if (queryParser.formattedQuery.Contains("QUARTER(") || queryParser.formattedQuery.Contains("QUARTER ("))
+            {
+                string datetıme;
+                string[] temp;
 
-            //    if (currentQuery.Contains("MONTHNAME("))
-            //    {
-            //        string date;
-            //        string[] temp;
+                temp = queryParser.formattedQuery.Split("QUARTER");
+                temp = temp[1].Split(")");
+                datetıme = temp[0].Remove(0, 1);
 
-            //        temp = currentQuery.Split("(");
-            //        temp = temp[1].Split(")");
-            //        date = temp[0];
+                queryParser.formattedQuery = queryParser.formattedQuery.Replace("QUARTER", "TO_NUMBER(TO_CHAR");
+                queryParser.formattedQuery = queryParser.formattedQuery.Replace(datetıme, datetıme + ", 'Q')");
 
-            //        currentQuery = currentQuery.Replace("MONTHNAME(", "TO_CHAR(");
-            //        queryParser.queryList[i] = currentQuery.Replace(date, date + ", 'Month'"); 
-
-
-
-            //    }
-
-            //    if (currentQuery.Contains("QUARTER("))
-            //    {
-            //        string date;
-            //        string[] temp;
-
-            //        temp = currentQuery.Split("(");
-            //        temp = temp[1].Split(")");
-            //        date = temp[0];
-
-            //        currentQuery = currentQuery.Replace("QUARTER(", "TO_NUMBER(TO_CHAR(");
-            //        queryParser.queryList[i] = currentQuery.Replace(date, date + ", 'Q'"); 
-
-            //    }
+            }
 
             //    if (currentQuery.Contains("SUBDATE("))
             //    {
@@ -336,39 +316,33 @@ namespace SqlConverter.Converter
             //    }
 
             // TIME METODUNU TAŞIDIM BURDAN
-      
 
+            if (queryParser.formattedQuery.Contains("WEEK(") || queryParser.formattedQuery.Contains("WEEK ("))
+            {
+                string datetıme;
+                string[] temp;
 
-            //    if (currentQuery.Contains("WEEK("))
-            //    {
-            //        string date;
-            //        string[] temp;
+                temp = queryParser.formattedQuery.Split("WEEK");
+                temp = temp[1].Split(")");
+                datetıme = temp[0].Remove(0, 1);
 
-            //        temp = currentQuery.Split("(");
-            //        temp = temp[1].Split(")");
-            //        date = temp[0];
+                queryParser.formattedQuery = queryParser.formattedQuery.Replace("WEEK", "TO_NUMBER(TO_CHAR");
+                queryParser.formattedQuery = queryParser.formattedQuery.Replace(datetıme, datetıme + ", 'WW')");
 
-
-            //        currentQuery = currentQuery.Replace("WEEK(", "TO_NUMBER(TO_CHAR(");
-            //        queryParser.queryList[i] = currentQuery.Replace(date, date + ", 'WW')");
-
-            //    }
-
-            //    if (currentQuery.Contains("YEAR("))
-            //    {
-            //        string date;
-            //        string[] temp;
-
-            //        temp = currentQuery.Split("(");
-            //        temp = temp[1].Split(")");
-            //        date = temp[0];
-
-            //        queryParser.queryList[i] = currentQuery.Replace("YEAR(", "EXTRACT(YEAR FROM ");
-
-            //    }
-
+            }
             
-            //}
+            if (queryParser.formattedQuery.Contains("YEAR(") || queryParser.formattedQuery.Contains("YEAR ("))
+            {
+                string datetıme;
+                string[] temp;
+
+                temp = queryParser.formattedQuery.Split("YEAR");
+                temp = temp[1].Split(")");
+                datetıme = temp[0].Remove(0, 1);
+
+                queryParser.formattedQuery = queryParser.formattedQuery.Replace("YEAR", "EXTRACT");
+                queryParser.formattedQuery = queryParser.formattedQuery.Replace(datetıme, "YEAR FROM " + datetıme);
+            }
 
             if (queryParser.formattedQuery.Contains("NOW()"))
             {
