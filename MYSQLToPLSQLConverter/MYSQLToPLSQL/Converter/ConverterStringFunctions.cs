@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace SqlConverter.Converter
 {
@@ -11,7 +12,7 @@ namespace SqlConverter.Converter
         public override void Convert(QueryParser queryParser)
         {
 
-            if(queryParser.formattedQuery.Contains("CHAR_LENGTH(") || queryParser.formattedQuery.Contains("CHAR_LENGTH ("))
+            if (queryParser.formattedQuery.Contains("CHAR_LENGTH(") || queryParser.formattedQuery.Contains("CHAR_LENGTH ("))
             {
                 queryParser.formattedQuery = queryParser.formattedQuery.Replace("CHAR_LENGTH", "LENGTH");
             }
@@ -97,26 +98,22 @@ namespace SqlConverter.Converter
 
             }
 
-            //if(queryParser.formattedQuery.Contains("LEFT(") || queryParser.formattedQuery.Contains("LEFT ("))
-            //{
-            //}
+            if (checkContains("LEFT", queryParser)) 
+            {
+                string splitQuery = tempQuery("LEFT", queryParser);
 
-            ////if (currentQuery.Contains("LEFT("))
-            ////{
-            ////    queryParser.queryList[i] = currentQuery.Replace("LEFT(", "SUBSTR(");
+                string text, numberOfChars;
 
-            ////    string fırstunıt;
-            ////    string[] temp;
+                string[] temp = splitQuery.Split("(");
+                temp = temp[1].Split(")");
+                temp = temp[0].Split(",");
 
-            ////    temp = currentQuery.Split("(");
+                text = temp[0];
+                numberOfChars = temp[1];
 
-            ////    temp = temp[1].Split(",");
-
-            ////    fırstunıt = temp[0];
-
-            ////    queryParser.queryList[i] = currentQuery.Replace(fırstunıt, fırstunıt + ", 1");
-
-            ////}
+                queryParser.formattedQuery = queryParser.formattedQuery.Replace("LEFT" + splitQuery, "SUBSTR(" + text + ", 1," + numberOfChars);
+                // burada gereksiz bir boşluk var bak buraya
+            }
 
             if (queryParser.formattedQuery.Contains("LOCATE(") || queryParser.formattedQuery.Contains("LOCATE ("))
             {
@@ -124,45 +121,25 @@ namespace SqlConverter.Converter
                 queryParser.formattedQuery = queryParser.formattedQuery.Replace("LOCATE", "INSTR");
             }
 
-            //if(queryParser.formattedQuery.Contains("POSITION(") || queryParser.formattedQuery.Contains("POSITION ("))
-            //{
-            //    string subString, lastString;
-            //    string[] temp;
-
-            //    temp = queryParser.formattedQuery.Split("POSITION");
-            //    temp = temp[1].Split();
-
-
-            //}
-
-            //    if (queryParser.queryList[i].Contains("POSITION("))
-            //    {
-            //        //queryParser.queryList[i] = queryParser.queryList[i].Replace(" POSITION(", " INSTR");
-
-            //        //string subString, lastString;
-            //        //string[] temp;
-
-
-            //        //temp = queryParser.queryList[i].Split("(");
-            //        //temp = temp[1].Split(")");
-            //        ////temp = temp[0].Split(" ");
-
-            //        //foreach (string s in temp)
-            //        //{
-            //        //    Console.WriteLine(s);
-            //        //}
-
-            //        //subString = temp[0];
-            //        //lastString = temp[2];
-
-
-            //        //queryParser.queryList[i] = queryParser.queryList[i].Replace(subString + " IN", lastString);
-
-            //    }
-
-            if (queryParser.formattedQuery.Contains("REPEAT(") || queryParser.formattedQuery.Contains("REPEAT ("))
+            if (checkContains("POSITION", queryParser))
             {
-                string splitQuery =  tempQuery("REPEAT", queryParser.formattedQuery);
+                string splitQuery = tempQuery("POSITION", queryParser);
+                string subString, text;
+
+                string[] temp = splitQuery.Split('(');
+                temp = temp[1].Split(")");
+                temp = temp[0].Split("IN");
+                subString = temp[0];
+                text = temp[1];
+
+                queryParser.formattedQuery = queryParser.formattedQuery.Replace("POSITION" + splitQuery, "INSTR(" + text + "," + subString + ")");
+                // Başında ve sonunda boşluk var istersen düzelt
+
+            }
+
+            if (checkContains("REPEAT", queryParser))
+            {
+                string splitQuery = tempQuery("REPEAT", queryParser);
 
                 string text, number;
                 string[] temp;
@@ -173,14 +150,55 @@ namespace SqlConverter.Converter
                 temp = temp[1].Split(")");
                 number = temp[0];
 
-                queryParser.formattedQuery = queryParser.formattedQuery.Replace("REPEAT" + splitQuery,"RPAD" + "(" + text + ", LENGTH(" + text + ") *" + number + ", " + text);
+                queryParser.formattedQuery = queryParser.formattedQuery.Replace("REPEAT" + splitQuery, "RPAD" + "(" + text + ", LENGTH(" + text + ") *" + number + ", " + text);
+            }
 
+            if (checkContains("RIGHT", queryParser))
+            {
+                string splitQuery = tempQuery("RIGHT", queryParser);
 
+                string text, numberOfChar;
+                string[] temp;
+
+                temp = splitQuery.Split("(");
+                temp = temp[1].Split(",");
+                text = temp[0];
+                temp = temp[1].Split(")");
+                numberOfChar = temp[0];
+
+                queryParser.formattedQuery = queryParser.formattedQuery.Replace("RIGHT" + splitQuery, "SUBSTR" + "(" + text + ", GREATEST(-LENGTH(" + text + "), -" + numberOfChar);
+            }
+
+            if (checkContains("SPACE", queryParser))
+            {
+                string splitQuery = tempQuery("SPACE", queryParser);
+
+                string number;
+                string[] temp;
+
+                temp = splitQuery.Split("(");
+                temp = temp[1].Split(")");
+                number = temp[0];
+
+                queryParser.formattedQuery = queryParser.formattedQuery.Replace("SPACE" + splitQuery, "RPAD(' ', " + number + ")");
+
+            }
+
+            if (checkContains("SUBSTRING", queryParser))
+            {
+                queryParser.formattedQuery = queryParser.formattedQuery.Replace("SUBSTRING", "SUBSTR");
+            }
+
+            if (checkContains("UCASE", queryParser))
+            {
+                queryParser.formattedQuery = queryParser.formattedQuery.Replace("UCASE", "UPPER");
             }
 
 
 
             _nextConverterHandler.Convert(queryParser);
+
         }
     }
 }
+

@@ -49,11 +49,7 @@ namespace SqlConverter.Converter
                 queryParser.formattedQuery = queryParser.formattedQuery.Replace("IFNULL", "NVL");
             }
 
-            if(queryParser.formattedQuery.Contains("CEILING(") || queryParser.formattedQuery.Contains("CEILING ("))
-            {
-                queryParser.formattedQuery = queryParser.formattedQuery.Replace("CEILING", "CEIL");
-            }
-
+            
             _nextConverterHandler.Convert(queryParser);
         }
     }

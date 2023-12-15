@@ -20,52 +20,8 @@ namespace SqlConverter.Converter
             }
 
 
-
-
-            //    }
-
-            //    if (currentQuery.Contains("RIGHT("))
-            //    {
-            //        string text, number;
-            //        string[] temp;
-
-            //        temp = currentQuery.Split("(");
-            //        temp = temp[1].Split(")");
-            //        temp = temp[0].Split(",");
-
-            //        text = temp[0];
-            //        number = temp[1];
-
-            //        Console.WriteLine(text);
-            //        Console.WriteLine(number);
-
-
-            //        currentQuery = currentQuery.Replace("RIGHT(", "SUBSTR(");
-            //        queryParser.queryList[i] = currentQuery.Replace(number, " GREATEST(-LENGTH("+text+"), -" +number +")");
-
-            //    }
-
-            if (queryParser.formattedQuery.Contains("SPACE(") || queryParser.formattedQuery.Contains("SPACE (")){
-
-                queryParser.formattedQuery = queryParser.formattedQuery.Replace("SPACE(", "RPAD(' ',");
-                queryParser.formattedQuery = queryParser.formattedQuery.Replace("SPACE (", "RPAD(' ',");
-            }
-
-            if(queryParser.formattedQuery.Contains("SUBSTRING(") || queryParser.formattedQuery.Contains("SUBSTRING ("))
-            {
-                queryParser.formattedQuery = queryParser.formattedQuery.Replace("SUBSTRING", "SUBSTR");
-            }
-
-            if(queryParser.formattedQuery.Contains("UCASE(") || queryParser.formattedQuery.Contains("UCASE ("))
-            {
-                queryParser.formattedQuery = queryParser.formattedQuery.Replace("UCASE", "UPPER");
-            }
-                
-            if(queryParser.formattedQuery.Contains("UCASE(") || queryParser.formattedQuery.Contains("UCASE ("))
-            {
-                queryParser.formattedQuery = queryParser.formattedQuery.Replace("UCASE", "UPPER");
-            }
-            
+          
+           
 
             //    if (currentQuery.Contains("COT("))
             //    {
