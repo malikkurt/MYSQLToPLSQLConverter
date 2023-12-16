@@ -10,7 +10,7 @@ namespace SqlConverter
     public abstract class ConverterHandler
     {
         protected ConverterHandler _nextConverterHandler;
-    
+
         public void setNextConverterHandler(ConverterHandler nextConverterHandler)
         {
             this._nextConverterHandler = nextConverterHandler;
@@ -19,7 +19,6 @@ namespace SqlConverter
 
         public string tempQuery(string keywords, QueryParser queryParser)
         {
-
             string[] temp;
 
             temp = queryParser.formattedQuery.Split(keywords);

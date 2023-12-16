@@ -50,7 +50,8 @@ namespace MYSQLToPLSQLConverter
                 new ConverterAdvancedFunctions(),
                 new ConverterStringFunctions(),
                 new ConverterTableName(),
-                new ConverterTimes()
+                new ConverterTimes(),
+                new ConverterNumericFunctions()
             };
 
             for (int i = 0; i < handlers.Count - 1; i++)
