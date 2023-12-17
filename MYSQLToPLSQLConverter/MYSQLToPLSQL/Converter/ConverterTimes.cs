@@ -69,7 +69,7 @@ namespace SqlConverter.Converter
             //}
 
 
-            //_nextConverterHandler.Convert(queryParser);
+            _nextConverterHandler.Convert(queryParser);
         }
     }
 }
