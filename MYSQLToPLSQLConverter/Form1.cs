@@ -1,15 +1,19 @@
-using SqlConverter.Converter;
-using SqlConverter;
-using System.Text;
-using System.Diagnostics.Metrics;
+using SqlConverter.Domain.Interfaces;
+using SqlConverter.Domain.Models;
+using Serilog;
 
 namespace MYSQLToPLSQLConverter
 {
     public partial class Form1 : Form
     {
-        public Form1()
+        private readonly IConverterHandler _converterHandler;
+        private readonly ILogger _logger;
+
+        public Form1(IConverterHandler converterHandler, ILogger logger)
         {
             InitializeComponent();
+            _converterHandler = converterHandler;
+            _logger = logger;
         }
 
         private void label1_Click(object sender, EventArgs e)
@@ -25,45 +29,26 @@ namespace MYSQLToPLSQLConverter
         private void Form1_Load(object sender, EventArgs e)
         {
             this.WindowState = FormWindowState.Maximized;
-
         }
 
         private void ConverterButton_Click(object sender, EventArgs e)
         {
-            string userInput = QueryInput.Text;
-
-            string result = MYSQLToOracleConvert(userInput);
-
-
-            QueryOuput.Text = result;
-        }
-
-        private string MYSQLToOracleConvert(string userInput)
-        {
-            QueryParser queryParser = new QueryParser(userInput);
-
-            List<ConverterHandler> handlers = new List<ConverterHandler>
+            try
             {
-                new ConverterDateFunctions(),
-                new ConverterSmallDiff(),
-                new ConverterQuestion(),
-                new ConverterAdvancedFunctions(),
-                new ConverterStringFunctions(),
-                new ConverterTableName(),
-                new ConverterTimes(),
-                new ConverterNumericFunctions()
-            };
+                string userInput = QueryInput.Text;
+                _logger.Information("Starting conversion for query: {Query}", userInput);
 
-            for (int i = 0; i < handlers.Count - 1; i++)
-            {
-                handlers[i].setNextConverterHandler(handlers[i + 1]);
+                var queryParser = new QueryParser(userInput);
+                _converterHandler.Convert(queryParser);
+
+                QueryOuput.Text = queryParser.FormattedQuery;
+                _logger.Information("Conversion completed successfully");
             }
-            handlers[0].Convert(queryParser);
-
-
-
-
-            return queryParser.formattedQuery.ToString();
+            catch (Exception ex)
+            {
+                _logger.Error(ex, "Error during conversion");
+                MessageBox.Show($"An error occurred during conversion: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void QueryInput_TextChanged(object sender, EventArgs e)
